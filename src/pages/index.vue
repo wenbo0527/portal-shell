@@ -134,17 +134,17 @@ const quickNavItemsWithGradient = computed(() => _quickNavItems.map((item, idx) 
   ][idx % 6]
 })))
 
-const productDomains = computed(() => allDomains.filter(d => d.key !== 'home'))
+const productDomains = computed(() => (allDomains ?? []).filter(d => d.key !== 'home'))
 
 const overviewStats = computed(() => [
   { label: '产品域', value: productDomains.value.length, icon: '🌐', bgColor: '#f0f5ff' },
-  { label: '功能模块', value: allDomains.reduce((s, d) => s + d.epics.reduce((ss, e) => ss + e.features.length, 0), 0), icon: '📦', bgColor: '#fff7e6' },
-  { label: 'EPIC', value: allDomains.reduce((s, d) => s + d.epics.length, 0), icon: '📂', bgColor: '#e6f7ff' },
-  { label: '我的收藏', value: favoriteFeatures.value.length, icon: '⭐', bgColor: '#f6ffed' },
+  { label: '功能模块', value: (allDomains ?? []).reduce((s, d) => s + (d.epics ?? []).reduce((ss, e) => ss + (e.features?.length ?? 0), 0), 0), icon: '📦', bgColor: '#fff7e6' },
+  { label: 'EPIC', value: (allDomains ?? []).reduce((s, d) => s + (d.epics?.length ?? 0), 0), icon: '📂', bgColor: '#e6f7ff' },
+  { label: '我的收藏', value: favoriteFeatures.value?.length ?? 0, icon: '⭐', bgColor: '#f6ffed' },
 ])
 
 const favoriteFeatures = computed(() =>
-  allDomains.flatMap(d => d.epics.flatMap(e => e.features)).slice(0, 4)
+  (allDomains ?? []).flatMap(d => (d.epics ?? []).flatMap(e => (e.features ?? []))).slice(0, 4)
 )
 
 const currentDomain = computed<DomainItem | undefined>(() =>
@@ -247,7 +247,7 @@ function switchDomain(key: string) {
   
   // 直接进入该域的第一个 Feature，而不是显示导航页
   const firstEpic = domain.epics[0]
-  if (firstEpic && firstEpic.features.length > 0) {
+  if (firstEpic && (firstEpic.features?.length ?? 0) > 0) {
     const firstFeature = firstEpic.features[0]
     navigateToFeature(firstFeature.key)
   } else {
@@ -264,7 +264,7 @@ function handleRefresh() {}
 function handleGoProductOverview(payload: { type: string; id: string; label: string; domainCode: string; uri?: string }) {
   if (payload.type === 'productDomain' || payload.type === 'feature' || payload.type === 'epic') {
     if (payload.domainCode) {
-      router.push(`/home/product-overview/${payload.domainCode}${payload.type === 'epic' && payload.uri ? '?epic=' + encodeURIComponent(payload.uri) : ''}`)
+      router.push(`/product-overview/${payload.domainCode}${payload.type === 'epic' && payload.uri ? '?epic=' + encodeURIComponent(payload.uri) : ''}`)
     }
   }
 }

@@ -32,7 +32,7 @@
             </div>
           </div>
           <a-tag :color="epicColor(epic.key)" size="small">
-            {{ epic.features.length }} 个功能
+            {{ epic.features?.length ?? 0 }} 个功能
           </a-tag>
         </div>
         <div class="epic-features">

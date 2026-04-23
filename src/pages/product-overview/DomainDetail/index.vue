@@ -38,10 +38,24 @@
         </a-space>
       </template>
     </a-result>
+    <a-result
+      v-else-if="!domainData"
+      status="warning"
+      title="该产品域暂无数据"
+      :sub-title="`域编号 ${domainCode} 的数据正在加载中或暂未录入`"
+      class="page-error"
+    >
+      <template #extra>
+        <a-space>
+          <a-button type="primary" @click="fetchData">重试</a-button>
+          <a-button @click="handleBack">返回</a-button>
+        </a-space>
+      </template>
+    </a-result>
     <template v-else-if="domainData">
       <div class="detail-stats">
         <div class="stat-card">
-          <span class="stat-value">{{ domainData.epics.length }}</span>
+          <span class="stat-value">{{ domainData.epics?.length ?? 0 }}</span>
           <span class="stat-label">应用</span>
         </div>
         <div class="stat-card">
@@ -56,7 +70,7 @@
 
       <div class="epic-list">
         <div
-          v-for="(epic, epicIdx) in domainData.epics"
+          v-for="(epic, epicIdx) in (domainData.epics ?? [])"
           :key="epic.uri"
           class="epic-card"
           :id="'epic-' + epicIdx"
@@ -157,10 +171,13 @@ async function fetchData() {
   if (!domainCode.value) return
   loading.value = true
   error.value = ''
+  console.log('[DomainDetail] fetchData start, domainCode:', domainCode.value)
   try {
     const res = await getDomainDetail(domainCode.value)
+    console.log('[DomainDetail] getDomainDetail result:', res ? `code=${res.productDomain?.code}, label=${res.productDomain?.label}, epics=${res.epics?.length ?? 0}` : 'NULL')
     domainData.value = res
   } catch (err: any) {
+    console.error('[DomainDetail] fetchData error:', err)
     error.value = err.message || '加载产品域详情失败'
   } finally {
     loading.value = false
@@ -199,11 +216,11 @@ function getFeatureStatusColor(status?: string): string {
 }
 
 const totalFeatures = computed(() =>
-  domainData.value?.epics.reduce((s, e) => s + (e.features?.length ?? 0), 0) ?? 0
+  (domainData.value?.epics ?? []).reduce((s, e) => s + (e.features?.length ?? 0), 0) ?? 0
 )
 
 const totalFunctionPoints = computed(() =>
-  domainData.value?.epics.reduce((s, e) =>
+  (domainData.value?.epics ?? []).reduce((s, e) =>
     s + ((e.features ?? []) as any[]).reduce((fs, f) => fs + ((f.functionPoints?.length ?? 0) as number), 0), 0) ?? 0
 )
 

@@ -17,6 +17,23 @@
   --surface-bg: #ffffff;
   --surface-bg-2: #f8f9fa;
 
+  /* Arco Design 兼容变量（保持向后兼容） */
+  --app-page-bg: var(--page-bg);
+  --app-space-1: var(--space-1);
+  --app-space-2: var(--space-2);
+  --app-space-3: var(--space-3);
+  --app-space-4: var(--space-4);
+  --app-space-6: var(--space-6);
+  --app-space-8: var(--space-8);
+  --app-surface-bg: var(--surface-bg);
+  --app-surface-bg-2: var(--surface-bg-2);
+  --app-border-color: var(--border-color);
+  --app-radius-s: var(--radius-s);
+  --app-radius-m: var(--radius-m);
+  --app-radius-l: var(--radius-l);
+  --app-shadow-1: var(--shadow-1);
+  --app-shadow-2: var(--shadow-2);
+
   /* 边框 */
   --border-color: #e5e6eb;
   --border-light: #f0f0f0;
@@ -55,5 +72,9 @@
     --text-secondary: rgba(255, 255, 255, 0.7);
     --text-tertiary: rgba(255, 255, 255, 0.5);
     --text-quaternary: rgba(255, 255, 255, 0.35);
+    /* Arco Design 兼容变量 */
+    --app-surface-bg: var(--surface-bg);
+    --app-surface-bg-2: var(--surface-bg-2);
+    --app-border-color: var(--border-color);
   }
 }

@@ -65,15 +65,15 @@
           <span>工作台首页</span>
         </a-menu-item>
 
-        <a-divider v-if="currentDomainEpics.length > 0" />
+        <a-divider v-if="currentDomainEpics.length > 0 && !collapsed" />
 
         <template v-for="epic in filteredEpics" :key="epic.key">
-          <a-sub-menu v-if="epic.features && epic.features.length > 0" :key="epic.key">
+          <a-sub-menu v-if="(epic.features?.length ?? 0) > 0" :key="epic.key">
+            <template #icon>
+              <span class="epic-icon">{{ epic.icon || '📂' }}</span>
+            </template>
             <template #title>
-              <div class="epic-title">
-                <span class="epic-icon">{{ epic.icon || '📂' }}</span>
-                <span class="epic-text" v-if="!collapsed">{{ epic.displayName }}</span>
-              </div>
+              <span class="epic-text">{{ epic.displayName }}</span>
             </template>
             <a-menu-item
               v-for="feature in epic.features"
@@ -87,9 +87,11 @@
             </a-menu-item>
           </a-sub-menu>
 
-          <a-menu-item v-else :key="epic.key" class="epic-title epic-standalone">
-            <span class="epic-icon">{{ epic.icon || '📂' }}</span>
-            <span class="epic-text" v-if="!collapsed">{{ epic.displayName }}</span>
+          <a-menu-item v-else :key="epic.key" class="epic-standalone">
+            <template #icon>
+              <span class="epic-icon">{{ epic.icon || '📂' }}</span>
+            </template>
+            <span class="epic-text">{{ epic.displayName }}</span>
           </a-menu-item>
         </template>
 
@@ -149,7 +151,7 @@ watch(searchQuery, (query) => {
   if (query.trim()) {
     // 搜索时展开所有 epic 子菜单
     const allEpicKeys = props.currentDomainEpics
-      .filter((epic: any) => epic.features && epic.features.length > 0)
+      .filter((epic: any) => (epic.features?.length ?? 0) > 0)
       .map((epic: any) => epic.key)
     openKeys.value = allEpicKeys
   }
@@ -171,7 +173,7 @@ const filteredEpics = computed(() => {
       features: filteredFeatures
     }
   }).filter((epic: any) => 
-    epic.features && epic.features.length > 0
+    (epic.features?.length ?? 0) > 0
   )
 })
 
@@ -235,9 +237,8 @@ function handleSubMenuClick(key: string) {
   border-bottom: 1px solid var(--border-light);
   flex-shrink: 0;
 }
-.sider-domain-info { display: flex; align-items: center; gap: var(--space-2); overflow: hidden; }
+.sider-domain-info { display: flex; align-items: center; gap: var(--space-2); overflow: hidden; width: 100%; min-width: 0; }
 .sider-domain-icon { font-size: 20px; flex-shrink: 0; }
-.sider-domain-icon-collapsed { font-size: 20px; display: block; text-align: center; width: 100%; }
 .sider-domain-name { font-size: 14px; font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 /* 搜索框样式 */
@@ -312,7 +313,7 @@ function handleSubMenuClick(key: string) {
 
 .epic-title { display: flex; align-items: center; gap: 6px; }
 .epic-icon { font-size: 14px; flex-shrink: 0; }
-.epic-text { font-size: 12px; font-weight: 600; color: var(--text-primary); }
+.epic-text { font-size: 12px; font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .epic-standalone { margin: 2px 6px !important; }
 .feature-item { padding-left: 28px !important; }
 .feature-item-content { display: flex; align-items: center; gap: 6px; }

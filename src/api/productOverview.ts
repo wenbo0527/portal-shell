@@ -25,11 +25,37 @@ export async function getProductOverview(): Promise<ProductOverviewData> {
 /**
  * 获取域详情
  */
-export async function getDomainDetail(code: string): Promise<DomainDetailData> {
-  const response = await axiosInstance.get<{ code: number; data: DomainDetailData }>(
-    `${API_BASE}/domain/${encodeURIComponent(code)}`
-  );
-  return response.data.data;
+export async function getDomainDetail(code: string): Promise<DomainDetailData | null> {
+  try {
+    const response = await axiosInstance.get<{ code: number; data: DomainDetailData }>(
+      `${API_BASE}/domain/${encodeURIComponent(code)}`
+    );
+    const data = response.data.data;
+    // Fallback: detail API 为空时，从 overview 数据中查找
+    if (!data) {
+      const overview = await getProductOverview();
+      const domain = overview.domains.find(d => d.code === code);
+      if (domain) {
+        return { 
+          productDomain: { uri: domain.uri || '', code: domain.code, label: domain.label, description: domain.description || '', priority: domain.priority || 'P2', status: domain.status || '已上线' }, 
+          epics: domain.epics || [] 
+        };
+      }
+      return null;
+    }
+    return data;
+  } catch {
+    // 错误时也从 overview 兜底
+    const overview = await getProductOverview();
+    const domain = overview.domains.find(d => d.code === code);
+    if (domain) {
+      return { 
+        productDomain: { uri: domain.uri || '', code: domain.code, label: domain.label, description: domain.description || '', priority: domain.priority || 'P2', status: domain.status || '已上线' }, 
+        epics: domain.epics || [] 
+      };
+    }
+    return null;
+  }
 }
 
 /**
@@ -44,41 +70,22 @@ export async function getEpicDetail(uri: string): Promise<Epic> {
 
 /**
  * 获取架构图数据（包含所有域和 Epic 详情）
+ * 直接使用 overview API 数据，不再逐域调用 detail，减少 API 调用
  */
 export async function getArchitectureMapData(): Promise<DomainWithEpics[]> {
-  let overview: ProductOverviewData;
-  
   try {
-    overview = await getProductOverview();
+    const overview = await getProductOverview();
+    if (!overview || !Array.isArray(overview.domains)) {
+      console.warn('[ProductOverview API] overview.domains missing, returning empty array');
+      return [];
+    }
+    return overview.domains.filter((d): d is DomainWithEpics => {
+      return Boolean(d && typeof d.code === 'string' && d.code.length > 0);
+    });
   } catch (err) {
     console.error('[ProductOverview API] getProductOverview failed:', err);
     return [];
   }
-
-  if (!overview || !Array.isArray(overview.domains)) {
-    console.warn('[ProductOverview API] overview.domains missing, returning empty array');
-    return [];
-  }
-
-  const validDomains = overview.domains.filter((d): d is DomainWithEpics => {
-    return Boolean(d && typeof d.code === 'string' && d.code.length > 0);
-  });
-
-  const detailResults = await Promise.all(
-    validDomains.map((domain) =>
-      getDomainDetail(domain.code).catch((err) => {
-        console.warn('[ProductOverview API] failed to fetch domain detail for', domain.code, err);
-        return null;
-      })
-    )
-  );
-
-  return detailResults
-    .filter((d): d is DomainDetailData => d !== null)
-    .map((d) => ({
-      ...d.productDomain,
-      epics: d.epics,
-    }));
 }
 
 /**

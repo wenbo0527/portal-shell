@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import ProductOverviewIndex from '../pages/product-overview/index.vue'
+import ProductOverviewDomainDetail from '../pages/product-overview/DomainDetail/index.vue'
 
 // portal-shell 主应用运行在 /home/ 前缀下
 // 子应用通过 iframe 加载，各子应用独立运行
@@ -13,6 +15,42 @@ const routes = [
     path: '/home',
     name: 'home',
     component: () => import('../pages/index.vue')
+  },
+  // 产品全景（优先匹配，避免被 :domain 拦截）
+  {
+    path: '/home/product-overview',
+    name: 'product-overview',
+    redirect: '/product-overview'
+  },
+  {
+    path: '/home/product-overview/:domainCode',
+    name: 'product-overview-domain',
+    redirect: (to: any) => `/product-overview/${to.params.domainCode}`
+  },
+  // 各产品域路由 -> 重定向到 product-overview 详情
+  {
+    path: '/home/risk',
+    redirect: '/product-overview/PD-RISK'
+  },
+  {
+    path: '/home/mkt',
+    redirect: '/product-overview/PD-MKT'
+  },
+  {
+    path: '/home/dex',
+    redirect: '/product-overview/PD-DEX'
+  },
+  {
+    path: '/home/dfd',
+    redirect: '/product-overview/PD-DFD'
+  },
+  {
+    path: '/home/dmt',
+    redirect: '/product-overview/PD-DMT'
+  },
+  {
+    path: '/home/com',
+    redirect: '/product-overview/PD-COM'
   },
   // 各产品域路由（/home 前缀下匹配）
   {
@@ -77,12 +115,12 @@ const routes = [
   {
     path: '/product-overview',
     name: 'product-overview',
-    component: () => import('../pages/product-overview/index.vue')
+    component: ProductOverviewIndex
   },
   {
     path: '/product-overview/:domainCode',
     name: 'product-overview-domain',
-    component: () => import('../pages/product-overview/DomainDetail/index.vue')
+    component: ProductOverviewDomainDetail
   },
 ]
 

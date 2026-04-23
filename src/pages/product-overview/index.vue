@@ -142,7 +142,7 @@ function getFPCount(domain: DomainWithEpics): number {
     sum + ((e.features ?? []) as any[]).reduce((fs: number, f) => fs + ((f.functionPoints?.length ?? 0) as number), 0), 0)
 }
 
-const totalEpics = computed(() => domains.value.reduce((s: number, d: DomainWithEpics) => s + d.epics.length, 0))
+const totalEpics = computed(() => domains.value.reduce((s: number, d: DomainWithEpics) => s + (d.epics?.length ?? 0), 0))
 const totalFeatures = computed(() => domains.value.reduce((s: number, d: DomainWithEpics) => s + getFeatureCount(d), 0))
 const totalFunctionPoints = computed(() => domains.value.reduce((s: number, d: DomainWithEpics) => s + getFPCount(d), 0))
 

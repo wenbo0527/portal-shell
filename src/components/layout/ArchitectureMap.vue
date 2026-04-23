@@ -135,7 +135,7 @@ const emit = defineEmits<{
 
 const displayDomains = computed(() => {
   const result = (props.domains ?? []).slice(0, 6)
-  console.log('[ArchitectureMap] displayDomains:', result.map(d => ({ code: d.code, label: d.label, epicCount: d.epics.length })))
+  console.log('[ArchitectureMap] displayDomains:', result.map(d => ({ code: d.code, label: d.label, epicCount: d.epics?.length ?? 0 })))
   return result
 })
 
@@ -218,10 +218,8 @@ function handleNodeClick(type: ArchitectureNodeType, item: { code?: string; labe
   gap: 0;
   padding: 0;
   background: transparent;
-  border: none;
-  border-radius: 0;
-  box-shadow: none;
   width: 100%;
+  min-width: 0;
 }
 
 .map-spinner {
@@ -241,7 +239,28 @@ function handleNodeClick(type: ArchitectureNodeType, item: { code?: string; labe
   max-width: 100%;
 }
 
-/* Layer Header */
+.layer {
+  width: 100%;
+  min-width: 0;
+  --layer-accent: #86909c;
+  --layer-accent-gradient: linear-gradient(180deg, #86909c 0%, var(--text-quaternary) 100%);
+}
+
+.layer-application {
+  --layer-accent: #165dff;
+  --layer-accent-gradient: linear-gradient(180deg, #165dff 0%, #4080ff 100%);
+}
+
+.layer-platform {
+  --layer-accent: #14c9c9;
+  --layer-accent-gradient: linear-gradient(180deg, #14c9c9 0%, #50d4d4 100%);
+}
+
+.layer-display {
+  --layer-accent: #86909c;
+  --layer-accent-gradient: linear-gradient(180deg, #86909c 0%, var(--text-quaternary) 100%);
+}
+
 .layer-header {
   display: flex;
   align-items: center;
@@ -261,18 +280,7 @@ function handleNodeClick(type: ArchitectureNodeType, item: { code?: string; labe
   top: 0;
   bottom: 0;
   width: 4px;
-}
-
-.layer-application .layer-header::before {
-  background: linear-gradient(180deg, #165dff 0%, #4080ff 100%);
-}
-
-.layer-platform .layer-header::before {
-  background: linear-gradient(180deg, #14c9c9 0%, #50d4d4 100%);
-}
-
-.layer-display .layer-header::before {
-  background: linear-gradient(180deg, #86909c 0%, var(--text-quaternary) 100%);
+  background: var(--layer-accent-gradient);
 }
 
 .layer-title {
@@ -281,6 +289,7 @@ function handleNodeClick(type: ArchitectureNodeType, item: { code?: string; labe
   gap: 10px;
   padding-left: 8px;
   width: 100%;
+  min-width: 0;
 }
 
 .layer-icon {
@@ -307,10 +316,10 @@ function handleNodeClick(type: ArchitectureNodeType, item: { code?: string; labe
 /* Layer Content */
 .layer-content {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 16px;
   width: 100%;
-  padding: 0 4px;
+  padding: 0;
   min-width: 0;
 }
 
@@ -319,6 +328,7 @@ function handleNodeClick(type: ArchitectureNodeType, item: { code?: string; labe
   display: flex;
   flex-direction: column;
   gap: 6px;
+  min-width: 0;
 }
 
 .domain-group-header {
@@ -373,16 +383,12 @@ function handleNodeClick(type: ArchitectureNodeType, item: { code?: string; labe
   transition: background 0.2s ease;
 }
 
-.layer-application .domain-card--clickable::before {
-  background: #165dff;
-}
-
-.layer-platform .domain-card--clickable::before {
-  background: #14c9c9;
+.layer .domain-card--clickable::before {
+  background: var(--layer-accent);
 }
 
 .layer-display .domain-card::before {
-  background: #86909c;
+  background: var(--layer-accent);
 }
 
 .domain-card--clickable {
@@ -454,15 +460,9 @@ function handleNodeClick(type: ArchitectureNodeType, item: { code?: string; labe
 }
 
 /* Responsive */
-@media (max-width: 1200px) {
-  .layer-content {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
 @media (max-width: 768px) {
   .layer-content {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
     gap: 12px;
   }
 
@@ -481,6 +481,14 @@ function handleNodeClick(type: ArchitectureNodeType, item: { code?: string; labe
 
   .layer-name {
     font-size: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .domain-card,
+  .domain-card--clickable:hover {
+    transition: none;
+    transform: none;
   }
 }
 </style>

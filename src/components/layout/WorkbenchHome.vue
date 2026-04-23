@@ -13,7 +13,7 @@
     <a-row :gutter="[16, 16]" class="stats-row">
       <a-col :xs="12" :sm="6" v-for="stat in overviewStats" :key="stat.label">
         <div class="stat-card">
-          <div class="stat-icon" :style="{ background: stat.bgColor }">
+          <div class="stat-icon square-badge" :style="{ background: stat.bgColor }">
             {{ (stat.label || '').slice(0, 1) }}
           </div>
           <div class="stat-body">
@@ -39,7 +39,7 @@
               :style="{ animationDelay: `${idx * 0.05}s` }"
               @click="handleRecentClick(item.key)"
             >
-              <div class="recent-icon" :style="{ background: item.gradient }">
+              <div class="recent-icon square-badge" :style="{ background: item.gradient }">
                 {{ (item.shortName || item.name || '').slice(0, 1) }}
               </div>
               <div class="recent-body">
@@ -66,22 +66,74 @@
               :style="{ animationDelay: `${idx * 0.05}s` }"
               @click="handleQuickNavClick(item.key)"
             >
-              <div class="quick-icon" :style="{ background: item.gradient }">
+              <div class="quick-icon square-badge" :style="{ background: item.gradient }">
                 {{ (item.shortName || item.name || '').slice(0, 1) }}
               </div>
               <span class="quick-name">{{ item.name }}</span>
             </div>
           </div>
         </div>
+      </a-col>
+    </a-row>
 
-        <ArchitectureMap
-          :domains="productOverviewDomains"
-          :loading="poLoading"
-          :error="poError"
-          :show-layers="['application']"
-          @select="handleArchitectureSelect"
-          @retry="fetchProductOverviewData"
-        />
+    <a-row :gutter="[20, 20]" class="main-content-row">
+      <a-col :xs="24">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">产品全景</span>
+            <span class="panel-sub">{{ productOverviewDomains.length }} 个产品域 · {{ totalEpics }} 个应用</span>
+          </div>
+          <div class="domain-grid">
+            <div
+              v-for="(domain, idx) in productOverviewDomains"
+              :key="domain.code"
+              class="domain-card-item"
+              :style="{ animationDelay: `${idx * 0.06}s` }"
+              @click="handleDomainCardClick(domain.code)"
+            >
+              <div class="domain-card-item__header">
+                <span class="domain-card-item__name">{{ domain.label }}</span>
+                <a-tag :color="getStatusColor(domain.status)" size="small">{{ domain.status }}</a-tag>
+              </div>
+              <div class="domain-card-item__meta">
+                <span class="domain-card-item__code">{{ domain.code }}</span>
+              </div>
+              <div class="domain-card-item__stats">
+                <a-statistic
+                  :value="(domain.epics ?? []).length"
+                  :value-style="{ fontSize: '20px', fontWeight: 600, color: 'var(--color-text-1)' }"
+                  suffix="<span style='font-size:12px;color:var(--color-text-3);font-weight:400'>应用</span>"
+                  :precision="0"
+                />
+                <a-statistic
+                  :value="getFeatureCount(domain)"
+                  :value-style="{ fontSize: '20px', fontWeight: 600, color: 'var(--color-text-1)' }"
+                  suffix="<span style='font-size:12px;color:var(--color-text-3);font-weight:400'>功能</span>"
+                  :precision="0"
+                />
+                <a-statistic
+                  :value="getFPCount(domain)"
+                  :value-style="{ fontSize: '20px', fontWeight: 600, color: 'var(--color-primary)' }"
+                  suffix="<span style='font-size:12px;color:var(--color-text-3);font-weight:400'>功能点</span>"
+                  :precision="0"
+                />
+              </div>
+              <div class="domain-card-item__epics">
+                <div
+                  v-for="epic in (domain.epics ?? []).slice(0, 3)"
+                  :key="epic.uri"
+                  class="epic-tag"
+                  @click.stop="handleEpicClick(domain.code, epic.uri)"
+                >
+                  <span class="epic-tag__label">{{ epic.label }}</span>
+                </div>
+                <div v-if="(domain.epics ?? []).length > 3" class="epic-more">
+                  +{{ (domain.epics ?? []).length - 3 }} 更多
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </a-col>
     </a-row>
   </div>
@@ -93,7 +145,6 @@ import { Message } from '@arco-design/web-vue'
 import type { DomainItem } from '../../config/domainDictionary'
 import type { DomainWithEpics } from '../../types/productOverview'
 import { getArchitectureMapData } from '../../api/productOverview'
-import ArchitectureMap from './ArchitectureMap.vue'
 
 const props = defineProps<{
   recentVisits: any[]
@@ -120,7 +171,7 @@ async function fetchProductOverviewData() {
   console.log('[WorkbenchHome] fetchProductOverviewData called')
   try {
     const data = await getArchitectureMapData()
-    console.log('[WorkbenchHome] got data:', data.map(d => ({ code: d.code, label: d.label, epicCount: d.epics.length })))
+    console.log('[WorkbenchHome] got data:', data.map(d => ({ code: d.code, label: d.label, epicCount: d.epics?.length ?? 0 })))
     productOverviewDomains.value = data
   } catch (err: any) {
     console.error('[WorkbenchHome] API error:', err)
@@ -130,12 +181,73 @@ async function fetchProductOverviewData() {
   }
 }
 
-function handleArchitectureSelect(payload: { type: string; id: string; label: string; domainCode: string; uri?: string }) {
-  if (!payload.domainCode) {
-    console.warn('[WorkbenchHome] handleArchitectureSelect: no domainCode', payload)
+function handleDomainCardClick(domainCode: string) {
+  const domain = productOverviewDomains.value.find(d => d.code === domainCode)
+  if (domain) {
+    emit('goProductOverview', { type: 'productDomain', id: domainCode, label: domain.label, domainCode })
   }
-  emit('goProductOverview', payload)
 }
+
+function handleEpicClick(domainCode: string, epicUri: string) {
+  const domain = productOverviewDomains.value.find(d => d.code === domainCode)
+  const epic = domain?.epics?.find(e => e.uri === epicUri)
+  if (domain && epic) {
+    emit('goProductOverview', { type: 'epic', id: epicUri, label: epic.label, domainCode, uri: epicUri })
+  }
+}
+
+function getStatusColor(status?: string): string {
+  switch (status) {
+    case '已上线': return 'green'
+    case '开发中': return 'arcoblue'
+    case '规划中': return 'orange'
+    default: return 'gray'
+  }
+}
+
+/**
+ * 从 summary feature label 解析真实功能数量
+ * 例如: "7 个功能点" → 7
+ */
+function parseFeatureCount(label?: string): number {
+  if (!label) return 0
+  const match = label.match(/(\d+)\s*个功能点/)
+  return match ? parseInt(match[1], 10) : 0
+}
+
+/**
+ * 从 summary feature label 解析真实功能点数量
+ * 例如: "7 个功能点" → 7（与上面相同，因为 summary 的 label 已经包含 FP 数量）
+ * 但 summary.feature.functionPoints.length 是模拟的虚数
+ * 所以也用同样的解析方式
+ */
+function parseFPCount(label?: string): number {
+  return parseFeatureCount(label)
+}
+
+/**
+ * 获取域下所有 Epic 的功能总数（从 summary label 解析）
+ */
+function getFeatureCount(domain: DomainWithEpics): number {
+  return (domain.epics ?? []).reduce((acc, epic) => {
+    const features = epic.features
+    if (!features || !Array.isArray(features)) return acc
+    return acc + features.reduce((fAcc, f) => fAcc + parseFeatureCount(f.label), 0)
+  }, 0)
+}
+
+/**
+ * 获取域下所有 Epic 的功能点总数（从 summary label 解析）
+ */
+function getFPCount(domain: DomainWithEpics): number {
+  return (domain.epics ?? []).reduce((acc, epic) => {
+    const features = epic.features
+    if (!features || !Array.isArray(features)) return acc
+    return acc + features.reduce((fAcc, f) => fAcc + parseFPCount(f.label), 0)
+  }, 0)
+}
+
+const totalEpics = computed(() => productOverviewDomains.value.reduce((acc, d) => acc + (d.epics ?? []).length, 0))
 
 const currentDateStr = computed(() => {
   const now = new Date()
@@ -172,6 +284,19 @@ onMounted(() => {
 <style scoped>
 .page-home {
   padding: var(--app-space-6) var(--app-space-8);
+  max-width: 1400px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.square-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--app-radius-m);
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  flex-shrink: 0;
 }
 
 .welcome-section {
@@ -225,14 +350,7 @@ onMounted(() => {
 .stat-icon {
   width: 42px;
   height: 42px;
-  border-radius: var(--app-radius-m);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   font-size: 16px;
-  font-weight: 700;
-  letter-spacing: 0.2px;
-  flex-shrink: 0;
 }
 
 .stat-body { display: flex; flex-direction: column; }
@@ -294,14 +412,7 @@ onMounted(() => {
 .recent-icon {
   width: 36px;
   height: 36px;
-  border-radius: var(--app-radius-m);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.2px;
-  flex-shrink: 0;
 }
 
 .recent-body { flex: 1; overflow: hidden; }
@@ -320,7 +431,7 @@ onMounted(() => {
 
 .recent-time { font-size: 12px; color: var(--color-text-4, rgba(0, 0, 0, 0.45)); white-space: nowrap; flex-shrink: 0; }
 
-.quick-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--app-space-3); }
+.quick-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: var(--app-space-3); }
 
 .quick-item {
   display: flex;
@@ -344,13 +455,7 @@ onMounted(() => {
 .quick-icon {
   width: 42px;
   height: 42px;
-  border-radius: var(--app-radius-m);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.2px;
 }
 
 .quick-name {
@@ -370,6 +475,129 @@ onMounted(() => {
     align-items: flex-start;
     gap: 16px;
     padding: var(--app-space-6);
+  }
+  .domain-grid { grid-template-columns: 1fr; }
+}
+
+.domain-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--app-space-4);
+  margin-top: var(--app-space-2);
+}
+
+.domain-card-item {
+  background: var(--app-surface-bg-2);
+  border: 1px solid var(--app-border-color);
+  border-radius: var(--app-radius-m);
+  padding: var(--app-space-4);
+  cursor: pointer;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+  animation: itemIn 0.24s ease backwards;
+}
+
+.domain-card-item:hover {
+  border-color: rgba(22, 93, 255, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+.domain-card-item__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.domain-card-item__name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-1, rgba(0, 0, 0, 0.88));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.domain-card-item__meta {
+  margin-bottom: 10px;
+}
+
+.domain-card-item__code {
+  font-size: 12px;
+  color: var(--color-text-3, rgba(0, 0, 0, 0.6));
+}
+
+.domain-card-item__stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  margin-bottom: 12px;
+  padding: 10px 8px;
+  background: var(--app-surface-bg);
+  border-radius: var(--app-radius-s);
+}
+
+.domain-card-item__stat {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--color-text-2, rgba(0, 0, 0, 0.72));
+}
+
+.domain-card-item__epics {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.epic-tag {
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  background: var(--app-surface-bg);
+  border-radius: var(--app-radius-s);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.epic-tag:hover { background: rgba(22, 93, 255, 0.08); }
+
+.epic-tag__label {
+  font-size: 12px;
+  color: var(--color-text-2, rgba(0, 0, 0, 0.72));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.epic-more {
+  font-size: 12px;
+  color: var(--color-text-3, rgba(0, 0, 0, 0.6));
+  padding: 2px 8px;
+}
+
+.panel-sub {
+  font-size: 13px;
+  color: var(--color-text-3, rgba(0, 0, 0, 0.6));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .recent-item,
+  .quick-item,
+  .domain-card-item {
+    animation: none;
+  }
+  .stat-card,
+  .quick-item,
+  .domain-card-item {
+    transition: none;
+  }
+  .stat-card:hover,
+  .quick-item:hover,
+  .domain-card-item:hover {
+    transform: none;
   }
 }
 </style>

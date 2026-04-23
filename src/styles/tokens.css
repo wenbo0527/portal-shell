@@ -1,0 +1,59 @@
+:root {
+  /* 间距系统 */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* 圆角系统 */
+  --radius-s: 6px;
+  --radius-m: 8px;
+  --radius-l: 12px;
+
+  /* 页面背景 */
+  --page-bg: #f5f5f5;
+  --surface-bg: #ffffff;
+  --surface-bg-2: #f8f9fa;
+
+  /* 边框 */
+  --border-color: #e5e6eb;
+  --border-light: #f0f0f0;
+
+  /* 阴影 */
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-2: 0 4px 16px rgba(0, 0, 0, 0.08);
+
+  /* 文字颜色（语义化） */
+  --text-primary: #1a1a2e;
+  --text-secondary: #4e5969;
+  --text-tertiary: #86909c;
+  --text-quaternary: #b2b5c0;
+
+  /* 主色 */
+  --color-primary: rgb(var(--primary-6));
+
+  /* 颜色语义 */
+  --color-text-1: rgba(0, 0, 0, 0.88);
+  --color-text-2: rgba(0, 0, 0, 0.72);
+  --color-text-3: rgba(0, 0, 0, 0.6);
+  --color-text-4: rgba(0, 0, 0, 0.45);
+}
+
+/* 暗色模式 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page-bg: #0f1115;
+    --surface-bg: #151823;
+    --surface-bg-2: #1a1f2e;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --border-light: rgba(255, 255, 255, 0.08);
+    --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-2: 0 4px 16px rgba(0, 0, 0, 0.4);
+    --text-primary: rgba(255, 255, 255, 0.9);
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-tertiary: rgba(255, 255, 255, 0.5);
+    --text-quaternary: rgba(255, 255, 255, 0.35);
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "name": "portal-shell",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext .vue,.js,.ts --fix",
+    "lint:check": "eslint . --ext .vue,.js,.ts",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.{vue,js,ts}": ["eslint --fix", "prettier --write"],
+    "*.{css,scss,json}": ["prettier --write"]
+  },
+  "dependencies": {
+    "@arco-design/web-vue": "^2.57.0",
+    "@vueuse/core": "^14.2.1",
+    "axios": "^1.15.2",
+    "pinia": "^3.0.4",
+    "pinia-plugin-persistedstate": "^4.7.1",
+    "qiankun": "^2.10.16",
+    "vue": "^3.5.32",
+    "vue-router": "^4.6.4"
+  },
+  "devDependencies": {
+    "@types/node": "^24.12.2",
+    "@typescript-eslint/eslint-plugin": "^8.59.0",
+    "@typescript-eslint/parser": "^8.59.0",
+    "@vitejs/plugin-legacy": "^8.0.1",
+    "@vitejs/plugin-vue": "^6.0.5",
+    "@vue/tsconfig": "^0.9.1",
+    "eslint": "^10.2.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-vue": "^10.9.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.8.3",
+    "typescript": "~6.0.2",
+    "vite": "^8.0.4",
+    "vue-tsc": "^3.2.6"
+  }
+}

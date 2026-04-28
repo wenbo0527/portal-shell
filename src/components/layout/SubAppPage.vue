@@ -102,20 +102,14 @@ const iframeLoaded = ref(false)
 const iframeError = ref('')
 
 // 子应用 URL 配置
+const PUBLIC_BASE_URL = import.meta.env.VITE_PUBLIC_BASE_URL || 'http://118.196.79.130'
+
 const iframeUrl = computed(() => {
   if (!props.currentFeature) return ''
   let url = props.currentFeature.url || ''
   
-  // 公网部署时替换 localhost 为公网路径
-  // 例如: http://localhost:8001/risk/xxx -> http://118.196.79.130/risk/xxx
-  if (url.includes('localhost:')) {
-    // 提取端口和完整路径（例如 /risk/external-data/lifecycle）
-    const match = url.match(/localhost:\d+(.*)/)
-    if (match) {
-      const fullPath = match[1]  // 已经是完整路径，如 /risk/xxx
-      // 直接使用公网域名 + 完整路径
-      url = `http://118.196.79.130${fullPath}`
-    }
+  if (url && !url.startsWith('http')) {
+    url = `${PUBLIC_BASE_URL}${url}`
   }
   
   return url

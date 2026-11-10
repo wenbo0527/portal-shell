@@ -374,8 +374,8 @@ const dmtDomain: DomainItem = {
       domain: 'dmt',
       domainName: '数据管理域',
       features: [
-        { key: 'dmt-meta-query', name: '元数据查询', epic: 'EPIC-DMT-META', epicName: '元数据管理', domain: 'dmt', domainName: '数据管理域', url: '/dmt/dmt/metadata', icon: '🔍', desc: '元数据检索', color: 'blue' },
-        { key: 'dmt-meta-model', name: '数据模型', epic: 'EPIC-DMT-META', epicName: '元数据管理', domain: 'dmt', domainName: '数据管理域', url: '/dmt/dmt/data-models', icon: '🏗️', desc: '数据模型管理', color: 'blue' },
+        { key: 'dmt-meta-query', name: '元数据查询', epic: 'EPIC-DMT-META', epicName: '元数据管理', domain: 'dmt', domainName: '数据管理域', url: '/data-community/management/metadata', icon: '🔍', desc: '元数据检索', color: 'blue' },
+        { key: 'dmt-meta-model', name: '数据模型', epic: 'EPIC-DMT-META', epicName: '元数据管理', domain: 'dmt', domainName: '数据管理域', url: '/data-community/management/data-models', icon: '🏗️', desc: '数据模型管理', color: 'blue' },
       ]
     },
     {
@@ -385,9 +385,9 @@ const dmtDomain: DomainItem = {
       domain: 'dmt',
       domainName: '数据管理域',
       features: [
-        { key: 'dmt-svc-register', name: '服务注册', epic: 'EPIC-DMT-SVC', epicName: '数据服务', domain: 'dmt', domainName: '数据管理域', url: '/dmt/dmt/service', icon: '📝', desc: '数据服务注册', color: 'green' },
-        { key: 'dmt-svc-publish', name: '服务发布', epic: 'EPIC-DMT-SVC', epicName: '数据服务', domain: 'dmt', domainName: '数据管理域', url: '/dmt/dmt/service/publish', icon: '🚀', desc: '数据服务发布', color: 'green' },
-        { key: 'dmt-svc-monitor', name: '服务监控', epic: 'EPIC-DMT-SVC', epicName: '数据服务', domain: 'dmt', domainName: '数据管理域', url: '/dmt/dmt/service/monitor', icon: '📊', desc: '服务调用监控', color: 'green' },
+        { key: 'dmt-svc-register', name: '服务注册', epic: 'EPIC-DMT-SVC', epicName: '数据服务', domain: 'dmt', domainName: '数据管理域', url: '/data-community/management/service', icon: '📝', desc: '数据服务注册', color: 'green' },
+        { key: 'dmt-svc-publish', name: '服务发布', epic: 'EPIC-DMT-SVC', epicName: '数据服务', domain: 'dmt', domainName: '数据管理域', url: '/data-community/management/service/api-wizard', icon: '🚀', desc: '数据服务发布', color: 'green' },
+        { key: 'dmt-svc-monitor', name: '服务监控', epic: 'EPIC-DMT-SVC', epicName: '数据服务', domain: 'dmt', domainName: '数据管理域', url: '/data-community/management/service/monitor', icon: '📊', desc: '服务调用监控', color: 'green' },
       ]
     },
     {
@@ -397,8 +397,8 @@ const dmtDomain: DomainItem = {
       domain: 'dmt',
       domainName: '数据管理域',
       features: [
-        { key: 'dmt-std-domain', name: '标准领域', epic: 'EPIC-DMT-STD', epicName: '数据标准', domain: 'dmt', domainName: '数据管理域', url: '/dmt/dmt/data-standard', icon: '📐', desc: '数据标准领域', color: 'orange' },
-        { key: 'dmt-std-manage', name: '标准管理', epic: 'EPIC-DMT-STD', epicName: '数据标准', domain: 'dmt', domainName: '数据管理域', url: '/dmt/dmt/data-standard/manage', icon: '📋', desc: '数据标准详情', color: 'orange' },
+        { key: 'dmt-std-domain', name: '标准领域', epic: 'EPIC-DMT-STD', epicName: '数据标准', domain: 'dmt', domainName: '数据管理域', url: '/data-community/management/data-standard/domains', icon: '📐', desc: '数据标准领域', color: 'orange' },
+        { key: 'dmt-std-manage', name: '标准管理', epic: 'EPIC-DMT-STD', epicName: '数据标准', domain: 'dmt', domainName: '数据管理域', url: '/data-community/management/data-standard/standards', icon: '📋', desc: '数据标准详情', color: 'orange' },
       ]
     },
     {
@@ -408,9 +408,9 @@ const dmtDomain: DomainItem = {
       domain: 'dmt',
       domainName: '数据管理域',
       features: [
-        { key: 'dmt-concept', name: '业务概念', epic: 'EPIC-DMT-CONCEPT', epicName: '业务概念', domain: 'dmt', domainName: '数据管理域', url: '/dmt/dmt/business-concept', icon: '💡', desc: '业务术语管理', color: 'cyan' },
-        { key: 'dmt-variable-mgmt', name: '变量管理', epic: 'EPIC-DMT-CONCEPT', epicName: '业务概念', domain: 'dmt', domainName: '数据管理域', url: '/dmt/dmt/variable-management', icon: '📝', desc: '变量指标管理', color: 'cyan' },
-        { key: 'dmt-variable-map', name: '变量地图', epic: 'EPIC-DMT-CONCEPT', epicName: '业务概念', domain: 'dmt', domainName: '数据管理域', url: '/dmt/dmt/variable-map', icon: '🗺️', desc: '变量关系地图', color: 'cyan' },
+        { key: 'dmt-concept', name: '业务概念', epic: 'EPIC-DMT-CONCEPT', epicName: '业务概念', domain: 'dmt', domainName: '数据管理域', url: '/data-community/management/business-concept', icon: '💡', desc: '业务术语管理', color: 'cyan' },
+        { key: 'dmt-variable-mgmt', name: '变量管理', epic: 'EPIC-DMT-CONCEPT', epicName: '业务概念', domain: 'dmt', domainName: '数据管理域', url: '/risk/variable-management', icon: '📝', desc: '变量指标管理', color: 'cyan' },
+        { key: 'dmt-variable-map', name: '变量地图', epic: 'EPIC-DMT-CONCEPT', epicName: '业务概念', domain: 'dmt', domainName: '数据管理域', url: '/risk/explore/map', icon: '🗺️', desc: '变量关系地图', color: 'cyan' },
       ]
     },
     {
@@ -420,9 +420,10 @@ const dmtDomain: DomainItem = {
       domain: 'dmt',
       domainName: '数据管理域',
       features: [
+        // TODO(dca-migration): dca 无 docs 页面，暂保留原指向待定
         { key: 'dmt-docs', name: '文档管理', epic: 'EPIC-DMT-SYSTEM', epicName: '系统配置', domain: 'dmt', domainName: '数据管理域', url: '/dmt/dmt/docs', icon: '📄', desc: '文档管理', color: 'gray' },
-        { key: 'dmt-notifications', name: '通知管理', epic: 'EPIC-DMT-SYSTEM', epicName: '系统配置', domain: 'dmt', domainName: '数据管理域', url: '/dmt/dmt/notifications', icon: '🔔', desc: '通知配置', color: 'gray' },
-        { key: 'dmt-user-groups', name: '用户组管理', epic: 'EPIC-DMT-SYSTEM', epicName: '系统配置', domain: 'dmt', domainName: '数据管理域', url: '/dmt/dmt/user-groups', icon: '👥', desc: '用户组管理', color: 'gray' },
+        { key: 'dmt-notifications', name: '通知管理', epic: 'EPIC-DMT-SYSTEM', epicName: '系统配置', domain: 'dmt', domainName: '数据管理域', url: '/data-community/management/notifications', icon: '🔔', desc: '通知配置', color: 'gray' },
+        { key: 'dmt-user-groups', name: '用户组管理', epic: 'EPIC-DMT-SYSTEM', epicName: '系统配置', domain: 'dmt', domainName: '数据管理域', url: '/data-community/management/user-groups', icon: '👥', desc: '用户组管理', color: 'gray' },
       ]
     }
   ]
@@ -444,8 +445,11 @@ const adminDomain: DomainItem = {
       domain: 'admin',
       domainName: '通用域',
       features: [
+        // TODO(dca-migration): 能力未并入 data-community-app（dca 无门户/内容/角色/用户管理页面），暂保留 admin-app 指向
         { key: 'admin-perm-user', name: '用户管理', epic: 'EPIC-ADMIN-PERM', epicName: '权限管理', domain: 'admin', domainName: '通用域', url: '/admin/admin/permission/user-management', icon: '👤', desc: '平台用户管理', color: 'blue' },
+        // TODO(dca-migration): 能力未并入 data-community-app（dca 无门户/内容/角色/用户管理页面），暂保留 admin-app 指向
         { key: 'admin-perm-role', name: '角色管理', epic: 'EPIC-ADMIN-PERM', epicName: '权限管理', domain: 'admin', domainName: '通用域', url: '/admin/admin/permission/role-management', icon: '🔐', desc: '角色权限配置', color: 'blue' },
+        // TODO(dca-migration): 能力未并入 data-community-app（dca 无门户/内容/角色/用户管理页面），暂保留 admin-app 指向
         { key: 'admin-perm-app', name: '应用权限', epic: 'EPIC-ADMIN-PERM', epicName: '权限管理', domain: 'admin', domainName: '通用域', url: '/admin/admin/permission/app-permission', icon: '📱', desc: '应用访问权限', color: 'blue' },
       ]
     },
@@ -456,6 +460,7 @@ const adminDomain: DomainItem = {
       domain: 'admin',
       domainName: '通用域',
       features: [
+        // TODO(dca-migration): 能力未并入 data-community-app（dca 无门户/内容/角色/用户管理页面），暂保留 admin-app 指向
         { key: 'admin-notice', name: '通知管理', epic: 'EPIC-ADMIN-NOTICE', epicName: '通知管理', domain: 'admin', domainName: '通用域', url: '/admin/admin/notice', icon: '🔔', desc: '系统通知配置', color: 'green' },
       ]
     },
@@ -466,6 +471,7 @@ const adminDomain: DomainItem = {
       domain: 'admin',
       domainName: '通用域',
       features: [
+        // TODO(dca-migration): 能力未并入 data-community-app（dca 无门户/内容/角色/用户管理页面），暂保留 admin-app 指向
         { key: 'admin-portal', name: '门户管理', epic: 'EPIC-ADMIN-PORTAL', epicName: '门户管理', domain: 'admin', domainName: '通用域', url: '/admin/admin/portal', icon: '🏠', desc: '门户配置管理', color: 'orange' },
       ]
     },
@@ -476,6 +482,7 @@ const adminDomain: DomainItem = {
       domain: 'admin',
       domainName: '通用域',
       features: [
+        // TODO(dca-migration): 能力未并入 data-community-app（dca 无门户/内容/角色/用户管理页面），暂保留 admin-app 指向
         { key: 'admin-content', name: '内容管理', epic: 'EPIC-ADMIN-CONTENT', epicName: '内容管理', domain: 'admin', domainName: '通用域', url: '/admin/admin/content', icon: '📝', desc: '内容发布管理', color: 'purple' },
       ]
     }
@@ -551,7 +558,8 @@ const dfdDomain: DomainItem = {
       domain: 'dfd',
       domainName: '数据发现域',
       features: [
-        { key: 'dfd-lineage', name: '资产血缘分析', epic: 'EPIC-DFD-OPS', epicName: '数据资产运营工具', domain: 'dfd', domainName: '数据发现域', url: '/dfd/lineage', icon: '🔗', desc: '数据资产血缘关系分析', color: 'blue' },
+        { key: 'dfd-lineage', name: '资产血缘分析', epic: 'EPIC-DFD-OPS', epicName: '数据资产运营工具', domain: 'dfd', domainName: '数据发现域', url: '/data-community/discovery/lineage', icon: '🔗', desc: '数据资产血缘关系分析', color: 'blue' },
+        // TODO(dca-migration): dca 无 impact-analysis 页面，暂保留原指向待定
         { key: 'dfd-impact', name: '变更影响分析', epic: 'EPIC-DFD-OPS', epicName: '数据资产运营工具', domain: 'dfd', domainName: '数据发现域', url: '/dfd/impact-analysis', icon: '📊', desc: '数据变更影响范围分析', color: 'blue' }
       ]
     },
@@ -562,8 +570,8 @@ const dfdDomain: DomainItem = {
       domain: 'dfd',
       domainName: '数据发现域',
       features: [
-        { key: 'dfd-catalog', name: '资产目录列表', epic: 'EPIC-DFD-DICT', epicName: '数据资产字典', domain: 'dfd', domainName: '数据发现域', url: '/dfd/asset-catalog', icon: '📁', desc: '数据资产目录管理', color: 'green' },
-        { key: 'dfd-favorites', name: '资产收藏', epic: 'EPIC-DFD-DICT', epicName: '数据资产字典', domain: 'dfd', domainName: '数据发现域', url: '/dfd/favorites', icon: '⭐', desc: '我的资产收藏', color: 'green' }
+        { key: 'dfd-catalog', name: '资产目录列表', epic: 'EPIC-DFD-DICT', epicName: '数据资产字典', domain: 'dfd', domainName: '数据发现域', url: '/data-community/discovery/asset-catalog', icon: '📁', desc: '数据资产目录管理', color: 'green' },
+        { key: 'dfd-favorites', name: '资产收藏', epic: 'EPIC-DFD-DICT', epicName: '数据资产字典', domain: 'dfd', domainName: '数据发现域', url: '/data-community/discovery/favorites', icon: '⭐', desc: '我的资产收藏', color: 'green' }
       ]
     },
     {
@@ -573,9 +581,9 @@ const dfdDomain: DomainItem = {
       domain: 'dfd',
       domainName: '数据发现域',
       features: [
-        { key: 'dfd-feature-dict', name: '特征字典列表', epic: 'EPIC-DFD-ELEMENT', epicName: '数据要素字典', domain: 'dfd', domainName: '数据发现域', url: '/dfd/feature-dict', icon: '🏷️', desc: '特征指标字典', color: 'orange' },
-        { key: 'dfd-variable-dict', name: '变量字典列表', epic: 'EPIC-DFD-ELEMENT', epicName: '数据要素字典', domain: 'dfd', domainName: '数据发现域', url: '/dfd/variable-dict', icon: '📝', desc: '变量指标字典', color: 'orange' },
-        { key: 'dfd-indicator-dict', name: '指标字典列表', epic: 'EPIC-DFD-ELEMENT', epicName: '数据要素字典', domain: 'dfd', domainName: '数据发现域', url: '/dfd/indicator-dict', icon: '📈', desc: '业务指标字典', color: 'orange' }
+        { key: 'dfd-feature-dict', name: '特征字典列表', epic: 'EPIC-DFD-ELEMENT', epicName: '数据要素字典', domain: 'dfd', domainName: '数据发现域', url: '/data-community/discovery/feature-dict', icon: '🏷️', desc: '特征指标字典', color: 'orange' },
+        { key: 'dfd-variable-dict', name: '变量字典列表', epic: 'EPIC-DFD-ELEMENT', epicName: '数据要素字典', domain: 'dfd', domainName: '数据发现域', url: '/risk/variable-hub', icon: '📝', desc: '变量指标字典', color: 'orange' },
+        { key: 'dfd-indicator-dict', name: '指标字典列表', epic: 'EPIC-DFD-ELEMENT', epicName: '数据要素字典', domain: 'dfd', domainName: '数据发现域', url: '/data-community/discovery/indicator-dict', icon: '📈', desc: '业务指标字典', color: 'orange' }
       ]
     },
     {
@@ -585,7 +593,7 @@ const dfdDomain: DomainItem = {
       domain: 'dfd',
       domainName: '数据发现域',
       features: [
-        { key: 'dfd-resources', name: '资源列表', epic: 'EPIC-DFD-RESOURCE', epicName: '数据资源字典', domain: 'dfd', domainName: '数据发现域', url: '/dfd/data-resources', icon: '💾', desc: '数据资源列表', color: 'cyan' }
+        { key: 'dfd-resources', name: '资源列表', epic: 'EPIC-DFD-RESOURCE', epicName: '数据资源字典', domain: 'dfd', domainName: '数据发现域', url: '/data-community/discovery/data-resources', icon: '💾', desc: '数据资源列表', color: 'cyan' }
       ]
     },
     {
@@ -595,7 +603,7 @@ const dfdDomain: DomainItem = {
       domain: 'dfd',
       domainName: '数据发现域',
       features: [
-        { key: 'dfd-search', name: '统一搜索页', epic: 'EPIC-DFD-SEARCH', epicName: '统一搜索', domain: 'dfd', domainName: '数据发现域', url: '/dfd/search', icon: '🔍', desc: '数据全局搜索', color: 'purple' }
+        { key: 'dfd-search', name: '统一搜索页', epic: 'EPIC-DFD-SEARCH', epicName: '统一搜索', domain: 'dfd', domainName: '数据发现域', url: '/data-community/discovery/search', icon: '🔍', desc: '数据全局搜索', color: 'purple' }
       ]
     }
   ]

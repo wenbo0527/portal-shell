@@ -30,19 +30,11 @@ export interface DomainItem {
   key: string           // 产品域标识 (risk, mkt, dex, dmt, admin)
   name: string          // 中文名称
   shortName: string     // 简称
-  port: number          // 服务端口
   icon: string          // 图标
   desc: string          // 描述
   epics: EpicItem[]     // EPIC 列表
-  menus?: SubMenuItem[] // 子应用菜单配置（可选）
   mergedInto?: string   // 已并入的目标应用：该域的 Feature 实际由目标应用提供
   note?: string         // 维护备注（部署归属、未合并范围等）
-}
-
-export interface SubMenuItem {
-  key: string
-  title: string
-  children?: SubMenuItem[]
 }
 
 // ==================== 数字风险域 ====================
@@ -50,48 +42,8 @@ const riskDomain: DomainItem = {
   key: 'risk',
   name: '数字风险',
   shortName: '数字风险',
-  port: 8001,
   icon: '🛡️',
   desc: '外数生命周期管理、离线模型平台',
-  menus: [
-    {
-      key: 'lifecycle',
-      title: '外数生命周期',
-      children: [
-        { key: '/external-data/lifecycle', title: '生命周期总览' },
-        { key: '/external-data/archive', title: '外数档案管理' },
-        { key: '/external-data/evaluation', title: '外数评估中心' },
-        { key: '/external-data/service-scene', title: '服务场景入口' },
-        { key: '/external-data/service-create', title: '外数服务创建（新）' },
-        { key: '/external-data/service', title: '服务任务列表' },
-        { key: '/external-data/sample-preparation', title: '样本表准备' },
-        { key: '/external-data/validation-template', title: '服务校验模版管理' },
-        { key: '/external-data/online-call-application', title: '外数线上调用服务申请' }
-      ]
-    },
-    {
-      key: 'budget',
-      title: '预算管理',
-      children: [
-        { key: '/budget/overview', title: '预算总览' },
-        { key: '/budget/list', title: '预算列表' },
-        { key: '/budget/monitor', title: '预算监控' },
-        { key: '/budget/contracts', title: '合同管理' },
-        { key: '/budget/settlement', title: '结算管理' }
-      ]
-    },
-    {
-      key: 'model',
-      title: '离线模型平台',
-      children: [
-        { key: '/model-offline-analysis/feature-center', title: '特征中心' },
-        { key: '/model-offline-analysis/model-register', title: '模型注册' },
-        { key: '/model-offline-analysis/model-backtrack', title: '模型回溯' },
-        { key: '/model-offline-analysis/task-management', title: '任务管理' },
-        { key: '/model-offline-analysis/model-evaluation', title: '模型评估' }
-      ]
-    }
-  ],
   epics: [
     {
       key: 'EPIC-RISK-EXT',
@@ -134,92 +86,8 @@ const mktDomain: DomainItem = {
   key: 'mkt',
   name: '数字营销',
   shortName: '数字营销',
-  port: 8002,
   icon: '📢',
   desc: '权益中心、客群中心、营销画布、触达系统、人工电销工作台',
-  menus: [
-    {
-      key: 'canvas',
-      title: '营销画布',
-      children: [
-        { key: '/tasks', title: '画布列表页' }
-      ]
-    },
-    {
-      key: 'benefit',
-      title: '权益中心',
-      children: [
-        { key: '/benefit', title: '权益首页' },
-        { key: '/benefit/template', title: '券模板管理' },
-        { key: '/benefit/management', title: '券管理' },
-        { key: '/benefit/package', title: '券包管理' },
-        { key: '/benefit/inventory', title: '券库存管理' },
-        { key: '/benefit/statistics', title: '权益统计' },
-        { key: '/benefit/logs', title: '权益日志' },
-        { key: '/global', title: '全局规则' }
-      ]
-    },
-    {
-      key: 'customer',
-      title: '客群中心',
-      children: [
-        { key: '/customer', title: '客群首页' },
-        { key: '/customer/tag-system', title: '标签管理' },
-        { key: '/customer/tag-table', title: '标签表管理' },
-        { key: '/customer/list', title: '客群列表' },
-        { key: '/customer/selector', title: '客群圈选' },
-        { key: '/customer/delete-approval', title: '客群删除审批' },
-        { key: '/customer/lifecycle/rules', title: '生命周期规则配置' },
-        { key: '/customer/lifecycle/analysis', title: '生命周期分析' },
-        { key: '/customer/lifecycle/monitor', title: '生命周期监控' }
-      ]
-    },
-    {
-      key: 'touch',
-      title: '触达系统',
-      children: [
-        { key: '/touch', title: '触达首页' },
-        { key: '/touch/system/overview', title: '系统概览' },
-        { key: '/touch/system/field', title: '字段管理' },
-        { key: '/touch/policy/overview', title: '策略模板管理' },
-        { key: '/touch/policy/stats', title: '触达数据概览' },
-        { key: '/touch/channel/manual-call', title: '人工外呼模板' },
-        { key: '/touch/channel/sms', title: '短信模板' },
-        { key: '/touch/channel/ai-call', title: 'AI外呼模板' },
-        { key: '/touch/channel/alert', title: '预警管理' },
-        { key: '/touch/channel/freq', title: '全局频控' },
-        { key: '/touch/channel/blacklist', title: '黑名单管理' },
-        { key: '/touch/channel/vendor', title: '供应商管理' },
-        { key: '/touch/query', title: '触达明细查询' },
-        { key: '/touch/query/sms', title: '短信发送记录' },
-        { key: '/touch/query/ai-call', title: 'AI外呼记录' },
-        { key: '/touch/query/manual-call', title: '人工外呼记录' },
-        { key: '/touch/query/marketing', title: '营销记录查询' },
-        { key: '/touch/manual-sms', title: '手动短信' }
-      ]
-    },
-    {
-      key: 'call',
-      title: '人工电销工作台',
-      children: [
-        { key: '/call/tasks', title: '呼叫任务' },
-        { key: '/call/records', title: '外呼记录' },
-        { key: '/call/callback', title: '未接回调' },
-        { key: '/call/agent', title: '坐席管理' },
-        { key: '/call/skill-group', title: '技能组管理' },
-        { key: '/call/org', title: '组织架构' },
-        { key: '/call/realtime', title: '实时监控' },
-        { key: '/call/agent-report', title: '坐席报表' },
-        { key: '/call/ops-report', title: '运营报表' },
-        { key: '/call/quality/list', title: '质检列表' },
-        { key: '/call/quality/rules', title: '质检规则' },
-        { key: '/call/quality/appeal', title: '申诉管理' },
-        { key: '/call/script', title: '话术模板' },
-        { key: '/call/sms-template', title: '短信模板' },
-        { key: '/call/config', title: '外呼配置' }
-      ]
-    }
-  ],
   epics: [
     {
       key: 'EPIC-MKT-BENEFIT',
@@ -300,32 +168,8 @@ const dexDomain: DomainItem = {
   key: 'dex',
   name: '数据探索',
   shortName: '数据探索',
-  port: 8003,
   icon: '🔍',
   desc: '客户360全景能力、指标看板、统一分析工作台',
-  menus: [
-    {
-      key: 'customer360',
-      title: '客户360',
-      children: [
-        { key: '/customer360', title: '客户搜索页' }
-      ]
-    },
-    {
-      key: 'metric',
-      title: '指标看板',
-      children: [
-        { key: '/indicator-dashboard', title: '看板首页' }
-      ]
-    },
-    {
-      key: 'analysis',
-      title: '统一分析工作台',
-      children: [
-        { key: '/analytics-workbench', title: '工作台首页' }
-      ]
-    }
-  ],
   epics: [
     {
       key: 'EPIC-DEX-C360',
@@ -365,7 +209,6 @@ const dmtDomain: DomainItem = {
   key: 'dmt',
   name: '数据管理',
   shortName: '数据管理',
-  port: 8006,
   icon: '📊',
   desc: '元数据管理、数据服务、数据标准（已并入数据社区）',
   mergedInto: 'data-community',
@@ -437,7 +280,6 @@ const adminDomain: DomainItem = {
   key: 'admin',
   name: '通用',
   shortName: '通用',
-  port: 8005,
   icon: '⚙️',
   desc: '权限管理、门户管理、通知管理',
   note: '由 admin-app 提供服务：门户/内容/角色/用户管理尚未并入 data-community-app',
@@ -498,7 +340,6 @@ export const homeDomain: DomainItem = {
   key: 'home',
   name: '首页',
   shortName: 'HOME',
-  port: 8000,
   icon: '🏠',
   desc: '企业应用门户首页',
   epics: []
@@ -510,51 +351,9 @@ const dfdDomain: DomainItem = {
   key: 'dfd',
   name: '数据发现',
   shortName: '数据发现',
-  port: 5185,
   icon: '💎',
   desc: '数据资产运营、资产字典、要素字典、资源字典、统一搜索（已并入数据社区）',
   mergedInto: 'data-community',
-  menus: [
-    {
-      key: 'asset-ops',
-      title: '数据资产运营工具',
-      children: [
-        { key: '/lineage', title: '资产血缘分析' },
-        { key: '/impact-analysis', title: '变更影响分析' }
-      ]
-    },
-    {
-      key: 'asset-dict',
-      title: '数据资产字典',
-      children: [
-        { key: '/asset-catalog', title: '资产目录列表' },
-        { key: '/favorites', title: '资产收藏' }
-      ]
-    },
-    {
-      key: 'element-dict',
-      title: '数据要素字典',
-      children: [
-        { key: '/feature-dict', title: '特征字典列表' },
-        { key: '/variable-dict', title: '变量字典列表' },
-        { key: '/indicator-dict', title: '指标字典列表' }
-      ]
-    },
-    {
-      key: 'resource-dict',
-      title: '数据资源字典',
-      children: [
-        { key: '/data-resources', title: '资源列表' }
-      ]
-    },
-    {
-      key: 'unified-search',
-      title: '统一搜索',
-      children: [
-        { key: '/search', title: '统一搜索页' }
-      ]
-    }
-  ],
   epics: [
     {
       key: 'EPIC-DFD-OPS',
@@ -623,7 +422,6 @@ const dataCommunityDomain: DomainItem = {
   key: 'data-community',
   name: '数据社区',
   shortName: '数据社区',
-  port: 5185,
   icon: '🏙️',
   desc: '统一工作台、客户 360、指标中心、统一查询、数据权限治理',
   epics: [

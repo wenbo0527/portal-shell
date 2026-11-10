@@ -35,6 +35,8 @@ export interface DomainItem {
   desc: string          // 描述
   epics: EpicItem[]     // EPIC 列表
   menus?: SubMenuItem[] // 子应用菜单配置（可选）
+  mergedInto?: string   // 已并入的目标应用：该域的 Feature 实际由目标应用提供
+  note?: string         // 维护备注（部署归属、未合并范围等）
 }
 
 export interface SubMenuItem {
@@ -365,7 +367,8 @@ const dmtDomain: DomainItem = {
   shortName: '数据管理',
   port: 8006,
   icon: '📊',
-  desc: '元数据管理、数据服务、数据标准',
+  desc: '元数据管理、数据服务、数据标准（已并入数据社区）',
+  mergedInto: 'data-community',
   epics: [
     {
       key: 'EPIC-DMT-META',
@@ -437,6 +440,7 @@ const adminDomain: DomainItem = {
   port: 8005,
   icon: '⚙️',
   desc: '权限管理、门户管理、通知管理',
+  note: '由 admin-app 提供服务：门户/内容/角色/用户管理尚未并入 data-community-app',
   epics: [
     {
       key: 'EPIC-ADMIN-PERM',
@@ -508,7 +512,8 @@ const dfdDomain: DomainItem = {
   shortName: '数据发现',
   port: 5185,
   icon: '💎',
-  desc: '数据资产运营、资产字典、要素字典、资源字典、统一搜索',
+  desc: '数据资产运营、资产字典、要素字典、资源字典、统一搜索（已并入数据社区）',
+  mergedInto: 'data-community',
   menus: [
     {
       key: 'asset-ops',
@@ -610,11 +615,81 @@ const dfdDomain: DomainItem = {
 }
 
 // ==================== 全部产品域列表 ====================
+
+// ==================== 数据社区（合并后的承载应用） ====================
+// dfd/dmt 的能力已由本应用提供（见其上 mergedInto）；此处只收录 dca 自身独有的页面，
+// 不重复登记已在上方域中改指过来的 Feature。
+const dataCommunityDomain: DomainItem = {
+  key: 'data-community',
+  name: '数据社区',
+  shortName: '数据社区',
+  port: 5185,
+  icon: '🏙️',
+  desc: '统一工作台、客户 360、指标中心、统一查询、数据权限治理',
+  epics: [
+    {
+      key: 'EPIC-DCA-EXPLORE',
+      name: 'EPIC-DCA-EXPLORE',
+      displayName: '探索与工作台',
+      icon: '🧭',
+      domain: 'data-community',
+      domainName: '数据社区',
+      features: [
+        { key: 'dca-workbench', name: '统一工作台', epic: 'EPIC-DCA-EXPLORE', epicName: '探索与工作台', domain: 'data-community', domainName: '数据社区', url: '/data-community/workbench', icon: '🏠', desc: '角色化工作台与快捷入口', color: 'arcoblue' },
+        { key: 'dca-customer360', name: '客户 360', epic: 'EPIC-DCA-EXPLORE', epicName: '探索与工作台', domain: 'data-community', domainName: '数据社区', url: '/data-community/exploration/customer360', icon: '👤', desc: '单客户全维度画像', color: 'blue' }
+      ]
+    },
+    {
+      key: 'EPIC-DCA-METRICS',
+      name: 'EPIC-DCA-METRICS',
+      displayName: '指标中心',
+      icon: '📈',
+      domain: 'data-community',
+      domainName: '数据社区',
+      features: [
+        { key: 'dca-metrics-center', name: '指标中心', epic: 'EPIC-DCA-METRICS', epicName: '指标中心', domain: 'data-community', domainName: '数据社区', url: '/data-community/exploration/metrics-center', icon: '📊', desc: '指标资产总览', color: 'green' },
+        { key: 'dca-metrics-dashboard', name: '指标看板', epic: 'EPIC-DCA-METRICS', epicName: '指标中心', domain: 'data-community', domainName: '数据社区', url: '/data-community/exploration/metrics-center/dashboard', icon: '🖥️', desc: '指标大盘', color: 'green' },
+        { key: 'dca-metrics-map', name: '指标地图', epic: 'EPIC-DCA-METRICS', epicName: '指标中心', domain: 'data-community', domainName: '数据社区', url: '/data-community/exploration/metrics-center/map', icon: '🗺️', desc: '指标关系地图', color: 'green' },
+        { key: 'dca-metrics-reports', name: '指标报表', epic: 'EPIC-DCA-METRICS', epicName: '指标中心', domain: 'data-community', domainName: '数据社区', url: '/data-community/exploration/metrics-center/reports', icon: '📄', desc: '指标报表订阅', color: 'green' }
+      ]
+    },
+    {
+      key: 'EPIC-DCA-QUERY',
+      name: 'EPIC-DCA-QUERY',
+      displayName: '统一查询',
+      icon: '🔎',
+      domain: 'data-community',
+      domainName: '数据社区',
+      features: [
+        { key: 'dca-sql', name: 'SQL 查询', epic: 'EPIC-DCA-QUERY', epicName: '统一查询', domain: 'data-community', domainName: '数据社区', url: '/data-community/exploration/unified-query/sql', icon: '💻', desc: '统一 SQL 查询工作区', color: 'purple' },
+        { key: 'dca-query-tasks', name: '查询任务', epic: 'EPIC-DCA-QUERY', epicName: '统一查询', domain: 'data-community', domainName: '数据社区', url: '/data-community/exploration/unified-query/tasks', icon: '🗂️', desc: '查询任务与实例', color: 'purple' },
+        { key: 'dca-query-exports', name: '导出记录', epic: 'EPIC-DCA-QUERY', epicName: '统一查询', domain: 'data-community', domainName: '数据社区', url: '/data-community/exploration/unified-query/exports', icon: '⬇️', desc: '结果导出记录', color: 'purple' },
+        { key: 'dca-db-account', name: '数据库账号', epic: 'EPIC-DCA-QUERY', epicName: '统一查询', domain: 'data-community', domainName: '数据社区', url: '/data-community/exploration/unified-query/db-account', icon: '🔑', desc: '自助开通与访问 Key', color: 'purple' }
+      ]
+    },
+    {
+      key: 'EPIC-DCA-PERM',
+      name: 'EPIC-DCA-PERM',
+      displayName: '数据权限治理',
+      icon: '🔐',
+      domain: 'data-community',
+      domainName: '数据社区',
+      features: [
+        { key: 'dca-perm-apply', name: '表权限申请', epic: 'EPIC-DCA-PERM', epicName: '数据权限治理', domain: 'data-community', domainName: '数据社区', url: '/data-community/management/permission/data-permission/apply', icon: '📝', desc: '数据表权限申请', color: 'orange' },
+        { key: 'dca-perm-approval', name: '表权限审批', epic: 'EPIC-DCA-PERM', epicName: '数据权限治理', domain: 'data-community', domainName: '数据社区', url: '/data-community/management/permission/data-permission/approval', icon: '✅', desc: '权限审批工作台', color: 'orange' },
+        { key: 'dca-perm-ledger', name: '授权台账', epic: 'EPIC-DCA-PERM', epicName: '数据权限治理', domain: 'data-community', domainName: '数据社区', url: '/data-community/management/permission/data-permission/management', icon: '📚', desc: '已授权台账', color: 'orange' },
+        { key: 'dca-perm-progress', name: '我的进度', epic: 'EPIC-DCA-PERM', epicName: '数据权限治理', domain: 'data-community', domainName: '数据社区', url: '/data-community/management/permission/data-permission/progress', icon: '⏳', desc: '我的申请进度', color: 'orange' }
+      ]
+    }
+  ]
+}
+
 export const allDomains: DomainItem[] = [
   homeDomain,
   riskDomain,
   mktDomain,
   dexDomain,
+  dataCommunityDomain,
   dfdDomain,
   dmtDomain,
   adminDomain
